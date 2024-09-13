@@ -1,0 +1,67 @@
+<div class="container mx-auto p-4">
+  <!-- Search Input -->
+  <div class="mb-4 flex items-center">
+    <input [(ngModel)]="searchTerm" (ngModelChange)="filter()" type="text" placeholder="Search..." class="p-2 border border-yellow-500 rounded">
+  </div>
+
+  <!-- Table -->
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-transparent border-2 border-yellow-500 rounded-lg shadow-md">
+      <thead>
+        <tr class="w-full bg-transparent border-b border-yellow-500">
+          <th (click)="sort('flrID')" class="p-2 text-left text-yellow-500 font-bold border-r border-yellow-500 cursor-pointer">FLR ID</th>
+          <th (click)="sort('instruments')" class="p-2 text-left text-yellow-500 font-bold border-r border-yellow-500 cursor-pointer">Instruments</th>
+          <th (click)="sort('beginTime')" class="p-2 text-left text-yellow-500 font-bold border-r border-yellow-500 cursor-pointer">Begin Time</th>
+          <th (click)="sort('peakTime')" class="p-2 text-left text-yellow-500 font-bold border-r border-yellow-500 cursor-pointer">Peak Time</th>
+          <th (click)="sort('endTime')" class="p-2 text-left text-yellow-500 font-bold border-r border-yellow-500 cursor-pointer">End Time</th>
+          <th (click)="sort('classType')" class="p-2 text-left text-yellow-500 font-bold border-r border-yellow-500 cursor-pointer">Class Type</th>
+          <th (click)="sort('sourceLocation')" class="p-2 text-left text-yellow-500 font-bold border-r border-yellow-500 cursor-pointer">Source Location</th>
+          <th (click)="sort('activeRegionNum')" class="p-2 text-left text-yellow-500 font-bold border-r border-yellow-500 cursor-pointer">Active Region Number</th>
+          <th (click)="sort('note')" class="p-2 text-left text-yellow-500 font-bold border-r border-yellow-500 cursor-pointer">Note</th>
+          <th (click)="sort('submissionTime')" class="p-2 text-left text-yellow-500 font-bold border-r border-yellow-500 cursor-pointer">Submission Time</th>
+          <th (click)="sort('link')" class="p-2 text-left text-yellow-500 font-bold border-r border-yellow-500 cursor-pointer">Link</th>
+          <th (click)="sort('linkedEvents')" class="p-2 text-left text-yellow-500 font-bold border-r border-yellow-500 cursor-pointer">Linked Events</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let flare of pagedData" class="border-b border-yellow-500">
+          <td class="p-2 text-yellow-500">{{ flare.flrID }}</td>
+          <td class="p-2 text-yellow-500">
+            <ul>
+              <li *ngFor="let instrument of flare.instruments" class="text-yellow-500">{{ instrument.displayName }}</li>
+            </ul>
+          </td>
+          <td class="p-2 text-yellow-500">{{ flare.beginTime }}</td>
+          <td class="p-2 text-yellow-500">{{ flare.peakTime }}</td>
+          <td class="p-2 text-yellow-500">{{ flare.endTime || 'N/A' }}</td>
+          <td class="p-2 text-yellow-500">{{ flare.classType }}</td>
+          <td class="p-2 text-yellow-500">{{ flare.sourceLocation }}</td>
+          <td class="p-2 text-yellow-500">{{ flare.activeRegionNum }}</td>
+          <td class="p-2 text-yellow-500">{{ flare.note || 'N/A' }}</td>
+          <td class="p-2 text-yellow-500">{{ flare.submissionTime }}</td>
+          <td class="p-2 text-yellow-500">
+            <a href="{{ flare.link }}" target="_blank" class="text-yellow-400 hover:underline">View Link</a>
+          </td>
+          <td class="p-2 text-yellow-500">
+            <ul>
+              <li *ngFor="let event of flare.linkedEvents" class="text-yellow-500">{{ event.activityID }}</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination Controls -->
+  <div class="flex justify-center mt-4">
+    <button (click)="previousPage()" [disabled]="currentPage === 1" class="px-4 py-2 bg-yellow-500 text-yellow-900 rounded-l-lg hover:bg-yellow-600">Previous</button>
+    <button *ngFor="let page of [].constructor(totalPages); let i = index"
+            (click)="goToPage(i + 1)"
+            [class.bg-yellow-600]="currentPage === i + 1"
+            [class.text-yellow-900]="currentPage === i + 1"
+            class="px-4 py-2 border-t border-b border-yellow-500 hover:bg-yellow-400">
+      {{ i + 1 }}
+    </button>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages" class="px-4 py-2 bg-yellow-500 text-yellow-900 rounded-r-lg hover:bg-yellow-600">Next</button>
+  </div>
+</div>
